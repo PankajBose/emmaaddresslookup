@@ -76,7 +76,7 @@ public class AddressLookup {
         List<String> siteParams = new ArrayList<>(Arrays.asList(siteNames));
 
         SqlQuerySpec spec = new SqlQuerySpec("SELECT c.emailaddress,c.firstname,c.lastname " +
-                "FROM ulineaddressbook c where array_contains(@sites,lower(c.sitename)) and " +
+                "FROM addressbook c where array_contains(@sites,lower(c.sitename)) and " +
                 "(startswith(c.emailaddress,@query,true) or startswith(c.firstname,@query,true) or startswith(c.lastname,@query,true) " +
                 "or startswith(c.displayname,@query,true)) " +
                 "order by c.lastusedtime desc",
@@ -148,7 +148,7 @@ public class AddressLookup {
             }
         }
 
-        CosmosPagedIterable<SiteBean> familiesPagedIterable = container.queryItems("SELECT c.id,c.sitename FROM ulineaddressbook c " +
+        CosmosPagedIterable<SiteBean> familiesPagedIterable = container.queryItems("SELECT c.id,c.sitename FROM addressbook c " +
                 "where not is_defined(c.lastusedtime)", new CosmosQueryRequestOptions(), SiteBean.class);
         Map<String, Set<String>> idsToUpdate = new HashMap<>();
         for (SiteBean siteBean : familiesPagedIterable) {
@@ -188,16 +188,16 @@ public class AddressLookup {
                     .consistencyLevel(ConsistencyLevel.EVENTUAL)
                     .buildClient();
 
-            CosmosDatabase database = client.getDatabase("my-database");
+            CosmosDatabase database = client.getDatabase("emma");
             LOGGER.info("Database connected : my-database");
 
-            container = database.getContainer("ulineaddressbook");
-            LOGGER.info("Container read successful : ulineaddressbook");
+            container = database.getContainer("addressbook");
+            LOGGER.info("Container read successful : " + container.getId());
 
             CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
             queryOptions.setQueryMetricsEnabled(true);
 
-            CosmosPagedIterable<SiteBean> familiesPagedIterable = container.queryItems("SELECT c.sitename,c.emailaddress,c.firstname,c.lastname,c.displayname,c.lastusedtime FROM ulineaddressbook c where c.emailaddress !=''", queryOptions, SiteBean.class);
+            CosmosPagedIterable<SiteBean> familiesPagedIterable = container.queryItems("SELECT c.sitename,c.emailaddress,c.firstname,c.lastname,c.displayname,c.lastusedtime FROM addressbook c where c.emailaddress !=''", queryOptions, SiteBean.class);
             LOGGER.info("Container query created");
 
             for (SiteBean bean : familiesPagedIterable) {

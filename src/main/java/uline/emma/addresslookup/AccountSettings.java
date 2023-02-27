@@ -10,11 +10,11 @@ public class AccountSettings {
             System.getProperty("ACCOUNT_KEY",
                     StringUtils.defaultString(StringUtils.trimToNull(
                                     System.getenv().get("ACCOUNT_KEY")),
-                            "wTwA19DqqxEwFBrEYDGv5rGAuLkr5Tk6ov9N1FSLAh9r7h7a35Xb9OAp8Yknup8AW5xYGYx1njWWvsjzW8GqEw=="));
+                            "TmWWAlAaPTBrCNIaFELpOZeGjSORbjRjPJb4zEvylEytRlB6OuvX2774N6nwY9Ww2LAR9yVXiL7TACDbNoaI7w=="));
 
     public static String HOST =
             System.getProperty("ACCOUNT_HOST",
                     StringUtils.defaultString(StringUtils.trimToNull(
                                     System.getenv().get("ACCOUNT_HOST")),
-                            "https://emmacosmosdbsql.documents.azure.com:443/"));
+                            "https://emmacosmosdb.documents.azure.com:443/"));
 }
